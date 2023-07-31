@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    image: tp6-custom-image
+    restart: always
+    volumes:
+      - ./:/app
+    container_name: tp8_app
+
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+      args:
+        ENVIRONMENT: development
+    image: php:74-custom-fpm-alpine
+    restart: always
+    environment:
+      - SET_CONTAINER_TIMEZONE=true
+      - CONTAINER_TIMEZONE=Asia/Shanghai
+    volumes_from:
+      - app
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    image: nginx:1.24-custom-alpine
+    restart: always
+    volumes:
+      - ./runtime/log/nginx/:/var/log/nginx/
+    volumes_from:
+      - app
+    ports:
+      - 3001:80
+
+networks:
+  defaults:
+    name: main
