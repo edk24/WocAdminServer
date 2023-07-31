@@ -10,7 +10,8 @@ use app\admin\model\system\SysUserModel;
 use library\jwt\Jwt;
 use library\jwt\JwtException;
 use library\jwt\JwtPayload;
-
+use RuntimeException;
+use think\facade\Db;
 
 /**
  * 鉴权
@@ -60,7 +61,7 @@ class Auth
         $result = $jwt->verifyToken($this->token);
 
         $account = $result['sub'];
-        $this->user = SysUserModel::where('account', $account)->find();
+        $this->user = SysUserModel::with(['dept'])->where('account', $account)->find();
         if ($this->user == null) {
             throw new JwtException('登录已失效, 请重新登录');
         }
@@ -77,7 +78,7 @@ class Auth
      */
     public function login(string $account, string $password): string
     {
-        $user = SysUserModel::where('account', $account)->find();
+        $user = SysUserModel::with(['dept'])->where('account', $account)->find();
 
         if ($user == null) {
             throw new LoginException(sprintf('用户 %s 不存在', $account));
@@ -143,8 +144,53 @@ class Auth
                 'id'                    => $this->user->id,
                 'account'               => $this->user->account,
                 'last_login_time'       => $this->user->last_login_time,
-                'token'                 => $this->token
+                'token'                 => $this->token,
+                'dept_id'               => $this->user->dept_id,
+                'dept_name'             => $this->user->dept->dept_name
             ]
         ];
+    }
+
+
+    /**
+     * 获取当前用户ID
+     *
+     * @return integer
+     */
+    public function getUserId(): int
+    {
+        return intval($this->getUserModel()->getData('id'));
+    }
+
+
+    /**
+     * 获取当前用户角色ID
+     *
+     * @return integer
+     */
+    public function getRoleId(): int
+    {
+        if ($this->user == null) {
+            throw new RuntimeException('用户数据异常');
+        }
+
+        $userId = $this->getUserId();
+
+        $roleId = Db::name('sys_user_role')->where('user_id', $userId)->value('role_id');
+        if ($roleId == null) {
+            throw new RuntimeException('用户数据异常');
+        }
+
+        return intval($roleId);
+    }
+
+    /**
+     * 获取部门ID
+     *
+     * @return integer
+     */
+    public function getDeptId(): int
+    {
+        return intval($this->getUserModel()->getData('dept_id'));
     }
 }

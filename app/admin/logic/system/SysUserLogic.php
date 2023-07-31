@@ -22,7 +22,8 @@ class SysUserLogic
         'last_login_ip',
         'last_login_time',
         'create_time',
-        'update_time'
+        'update_time',
+        'dept_id'
     ];
 
 
@@ -50,9 +51,14 @@ class SysUserLogic
         $limit = intval($params['limit'] ?? 10);
         $result = SysUserModel::where($where)->field(self::$field)->order('id desc')->paginate($limit);
 
+        $rows = $result->items();
+        foreach ($rows as &$row) {
+            $row->append(['deptName']);
+        }
+
         return [
             'count'     => $result->total(),
-            'rows'      => $result->items()
+            'rows'      => $rows
         ];
     }
 
@@ -177,5 +183,18 @@ class SysUserLogic
     {
         $user = SysUserModel::where('account', $account)->find();
         return $user ? true : false;
+    }
+
+
+    /**
+     * 是否为超级管理员
+     *
+     * @param integer $userId
+     * @return boolean
+     */
+    public static function isSuperAdmin(int $userId): bool
+    {
+        // TODO 改为通过角色role_key == admin 判断
+        return $userId === 1;
     }
 }

@@ -41,7 +41,7 @@ class SysDeptLogic
      * @param array $params
      * @return array
      */
-    public function selectDeptList(array $params = []): array
+    public function lists(array $params = []): array
     {
         $where = [];
 
@@ -52,7 +52,7 @@ class SysDeptLogic
             ['__ADMIN__ `u`', 'u.dept_id = d.dept_id', 'left']
         ];
 
-        $result = SysDeptModel::join($join)->where($where)->order('sort asc')->group('d.dept_id')->select();
+        $result = (new SysDeptModel)->dataScope('d')->join($join)->where($where)->order('sort asc')->group('d.dept_id')->select();
 
         return $result->toArray();
     }
@@ -76,7 +76,7 @@ class SysDeptLogic
      * @param integer $deptId
      * @return array
      */
-    public function getChildIdsByDeptId(int $deptId, bool $whitSelf = false): array
+    public static function getChildIdsByDeptId(int $deptId, bool $whitSelf = false): array
     {
         $childIds = SysDeptModel::whereRaw('FIND_IN_SET(:dept_id, ancestors)', ['dept_id' => $deptId])->column('dept_id');
         if ($whitSelf) {
@@ -91,9 +91,9 @@ class SysDeptLogic
      * @param integer $deptId
      * @return boolean
      */
-    public function hasChildByDeptId(int $deptId): bool
+    public static function hasChildByDeptId(int $deptId): bool
     {
-        $child = $this->getChildIdsByDeptId($deptId, false);
+        $child = self::getChildIdsByDeptId($deptId, false);
         return count($child) > 0;
     }
 
@@ -119,10 +119,6 @@ class SysDeptLogic
         }
         $exist = SysDeptModel::where($where)->find();
         return $exist ? true : false;
-    }
-
-    public static function lists()
-    {
     }
 
     public static function create(array $data): int
