@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace app\admin\logic\system;
+namespace app\admin\logic\auth;
 
-use app\admin\model\system\SysUserModel;
-use app\common\enum\StatusEnum;
+use app\admin\model\auth\SysUserModel;
+use app\common\enums\StatusType;
 use RuntimeException;
 
 /**
@@ -83,7 +83,7 @@ class SysUserLogic
         $user->set('password', md5($params['password'] . $salt));
         $user->set('salt', $salt);
         $user->set('dept_id', $params['dept_id']);
-        $user->set('status', $params['status'] ?? StatusEnum::NORMAL->value);
+        $user->set('status', $params['status'] ?? StatusType::NORMAL->value);
         $success = $user->save();
         if (!$success) {
             throw new RuntimeException('创建用户失败, 请稍后再试~');

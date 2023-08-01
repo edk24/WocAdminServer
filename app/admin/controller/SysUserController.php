@@ -2,8 +2,8 @@
 
 namespace app\admin\controller;
 
-use app\admin\logic\system\SysUserLogic;
-use app\admin\validate\SysUserValidate;
+use app\admin\logic\auth\SysUserLogic;
+use app\admin\validate\auth\SysUserValidate;
 use Exception;
 use RuntimeException;
 use think\facade\Db;

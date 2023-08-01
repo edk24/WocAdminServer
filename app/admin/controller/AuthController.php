@@ -3,8 +3,8 @@
 namespace app\admin\controller;
 
 use app\admin\exception\LoginException;
-use app\admin\validate\LoginValidate;
-use app\common\enum\ApiCodeEnum;
+use app\admin\validate\auth\LoginValidate;
+use app\common\enums\ApiCodeEnum;
 use think\Request;
 
 /**

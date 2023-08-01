@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\enum;
+namespace app\common\enums;
 
 /**
  * 接口 code 枚举

@@ -1,12 +1,12 @@
 <?php
 
-namespace app\common\enum;
+namespace app\common\enums;
 
 
 /**
  * 状态枚举
  */
-enum StatusEnum: string
+enum StatusType: string
 {
     /** 正常 */
     case NORMAL = 'normal';

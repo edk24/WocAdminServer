@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace app\admin\library;
 
 use app\admin\exception\LoginException;
-use app\admin\logic\system\SysUserLogic;
-use app\admin\model\system\AdminModel;
-use app\admin\model\system\SysUserModel;
+use app\admin\logic\auth\SysUserLogic;
+use app\admin\model\auth\AdminModel;
+use app\admin\model\auth\SysUserModel;
 use library\jwt\Jwt;
 use library\jwt\JwtException;
 use library\jwt\JwtPayload;

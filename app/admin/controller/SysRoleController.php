@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace app\admin\controller;
 
-use app\admin\logic\system\SysRoleLogic;
-use app\admin\validate\SysRoleValidate;
+use app\admin\logic\auth\SysRoleLogic;
+use app\admin\validate\auth\SysRoleValidate;
 use Exception;
 use think\facade\Db;
 use think\Request;

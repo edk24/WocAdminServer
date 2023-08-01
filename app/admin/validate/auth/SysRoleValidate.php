@@ -1,7 +1,8 @@
 <?php
-declare (strict_types = 1);
 
-namespace app\admin\validate;
+declare(strict_types=1);
+
+namespace app\admin\validate\auth;
 
 use think\Validate;
 
@@ -32,7 +33,7 @@ class SysRoleValidate extends Validate
     ];
 
     protected $scene = [
-        'create'            => ['role_key','role_name','data_scope'],
-        'edit'              => ['role_key','role_name','data_scope']
+        'create'            => ['role_key', 'role_name', 'data_scope'],
+        'edit'              => ['role_key', 'role_name', 'data_scope']
     ];
 }

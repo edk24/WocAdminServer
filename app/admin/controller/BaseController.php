@@ -3,7 +3,7 @@
 namespace app\admin\controller;
 
 use app\admin\library\Auth;
-use app\common\enum\ApiCodeEnum;
+use app\common\enums\ApiCodeEnum;
 use app\Controller;
 use think\exception\HttpResponseException;
 

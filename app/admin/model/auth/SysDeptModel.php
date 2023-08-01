@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\admin\model\system;
+namespace app\admin\model\auth;
 
 use app\admin\library\trait\DataScope;
 use think\facade\Db;

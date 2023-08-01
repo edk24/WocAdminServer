@@ -4,7 +4,7 @@ namespace app\admin\library\trait;
 
 use app\admin\enums\DataScopeType;
 use app\admin\library\Auth;
-use app\admin\logic\system\SysDeptLogic;
+use app\admin\logic\auth\SysDeptLogic;
 use think\facade\Db;
 
 /**

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace app\admin\logic\system;
+namespace app\admin\logic\auth;
 
-use app\admin\model\system\SysDeptModel;
-use app\admin\model\system\SysUserModel;
-use app\common\enum\StatusEnum;
+use app\admin\model\auth\SysDeptModel;
+use app\admin\model\auth\SysUserModel;
+use app\common\enums\StatusType;
 use library\Tree;
 use RuntimeException;
 
@@ -130,7 +130,7 @@ class SysDeptLogic
         $dept->set('sort', $data['sort'] ?? 999);
         $dept->set('leader', $data['leader']);
         $dept->set('mobile', $data['mobile']);
-        $dept->set('status', $data['status'] ?? StatusEnum::NORMAL->value);
+        $dept->set('status', $data['status'] ?? StatusType::NORMAL->value);
 
         $success = $dept->save();
         if (!$success) {
@@ -152,7 +152,7 @@ class SysDeptLogic
         $dept->set('sort', $data['sort'] ?? 999);
         $dept->set('leader', $data['leader']);
         $dept->set('mobile', $data['mobile']);
-        $dept->set('status', $data['status'] ?? StatusEnum::NORMAL->value);
+        $dept->set('status', $data['status'] ?? StatusType::NORMAL->value);
 
         $success = $dept->save();
         if (!$success) {

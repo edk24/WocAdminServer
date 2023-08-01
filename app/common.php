@@ -1,7 +1,7 @@
 <?php
 // 应用公共文件
 
-use app\common\enum\ApiCodeEnum;
+use app\common\enums\ApiCodeEnum;
 use think\Response;
 
 /**

@@ -1,9 +1,9 @@
 <?php
 
-namespace app\admin\logic\system;
+namespace app\admin\logic\auth;
 
-use app\admin\model\system\SysMenuModel;
-use app\common\enum\StatusEnum;
+use app\admin\model\auth\SysMenuModel;
+use app\common\enums\StatusType;
 use RuntimeException;
 
 class SysMenuLogic
@@ -118,8 +118,8 @@ class SysMenuLogic
             ['sys_role r', 'r.role_id = ur.role_id', 'left'],
         ];
 
-        $where['m.status'] = StatusEnum::NORMAL->value;
-        $where['r.status'] = StatusEnum::NORMAL->value;
+        $where['m.status'] = StatusType::NORMAL->value;
+        $where['r.status'] = StatusType::NORMAL->value;
         $where['ur.user_id'] = $userId;
         $perms = SysMenuModel::alias('m')->join($join)->where($where)->column('distinct m.perms');
 
@@ -144,7 +144,7 @@ class SysMenuLogic
             ['sys_role_menu rm', 'rm.menu_id = m.menu_id', 'left'],
         ];
 
-        $where['m.status'] = StatusEnum::NORMAL->value;
+        $where['m.status'] = StatusType::NORMAL->value;
         $where['rm.role_id'] = $roleId;
         $perms = SysMenuModel::alias('m')->join($join)->where($where)->column('distinct m.perms');
 
@@ -173,7 +173,7 @@ class SysMenuLogic
         $menu->set('visible', $params['visible']);
         $menu->set('perms', $params['perms']);
         $menu->set('icon', $params['icon']);
-        $menu->set('status', $params['status'] ?? StatusEnum::NORMAL->value);
+        $menu->set('status', $params['status'] ?? StatusType::NORMAL->value);
         $success = $menu->save();
         if (!$success) {
             throw new RuntimeException('创建菜单失败, 请稍后再试~');
@@ -205,7 +205,7 @@ class SysMenuLogic
         $menu->set('visible', $params['visible']);
         $menu->set('perms', $params['perms']);
         $menu->set('icon', $params['icon']);
-        $menu->set('status', $params['status'] ?? StatusEnum::NORMAL->value);
+        $menu->set('status', $params['status'] ?? StatusType::NORMAL->value);
         $success = $menu->save();
         if (!$success) {
             throw new RuntimeException('修改菜单失败, 请稍后再试~');
