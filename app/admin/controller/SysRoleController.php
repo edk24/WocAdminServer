@@ -12,22 +12,14 @@ use think\Request;
 
 class SysRoleController
 {
-    /**
-     * 显示资源列表
-     *
-     * @return \think\Response
-     */
-    public function index(Request $request)
+
+    public function lists(Request $request)
     {
         $params = $request->param();
         return resp_data(SysRoleLogic::lists($params));
     }
 
-    /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
-     */
+
     public function create(Request $request)
     {
         $params = $request->post();
@@ -50,13 +42,6 @@ class SysRoleController
     }
 
 
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
     public function update(Request $request)
     {
         $params = $request->post();
@@ -80,7 +65,6 @@ class SysRoleController
 
     /**
      * 通过ID查询用户信息.
-     *
      */
     public function get(Request $request)
     {
@@ -97,7 +81,6 @@ class SysRoleController
     /**
      * 删除指定资源
      *
-     * @param  int  $id
      * @return \think\Response
      */
     public function delete(Request $request)
