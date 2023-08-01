@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\admin\library;
 
 use app\admin\exception\LoginException;
+use app\admin\logic\system\SysUserLogic;
 use app\admin\model\system\AdminModel;
 use app\admin\model\system\SysUserModel;
 use library\jwt\Jwt;
@@ -61,7 +62,7 @@ class Auth
         $result = $jwt->verifyToken($this->token);
 
         $account = $result['sub'];
-        $this->user = SysUserModel::with(['dept'])->where('account', $account)->find();
+        $this->user = (new SysUserModel())->with(['dept'])->where('account', $account)->find();
         if ($this->user == null) {
             throw new JwtException('登录已失效, 请重新登录');
         }
@@ -137,11 +138,12 @@ class Auth
      */
     public function getUserInfo(): array
     {
+        dd(SysUserLogic::getById(1));
         return [
             'user' => [
                 'nickname'              => $this->user->nickname,
                 'avatar'                => $this->user->avatar ?? letter_avatar($this->user->nickname ?? $this->user->account),
-                'id'                    => $this->user->id,
+                'id'                    => $this->user->user_id,
                 'account'               => $this->user->account,
                 'last_login_time'       => $this->user->last_login_time,
                 'token'                 => $this->token,
@@ -159,7 +161,7 @@ class Auth
      */
     public function getUserId(): int
     {
-        return intval($this->getUserModel()->getData('id'));
+        return intval($this->user->user_id);
     }
 
 
