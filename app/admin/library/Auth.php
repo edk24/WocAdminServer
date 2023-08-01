@@ -138,7 +138,6 @@ class Auth
      */
     public function getUserInfo(): array
     {
-        dd(SysUserLogic::getById(1));
         return [
             'user' => [
                 'nickname'              => $this->user->nickname,
