@@ -18,6 +18,13 @@ class SysDeptModel extends Model
     protected $name = 'sys_dept';
 
 
+    // 关联用户
+    public function user()
+    {
+        return $this->hasOne(SysUserModel::class, 'dept_id', 'dept_id')->joinType('left');
+    }
+
+
     /**
      * 取祖籍ids
      *
@@ -37,15 +44,14 @@ class SysDeptModel extends Model
     }
 
 
-    public static function init()
-    {
-        // self::onBeforeWrite(function (self $row) {
-        //     $changeData = $row->getChangedData();
 
-        //     // 更新祖籍ids
-        //     if (isset($changeData['parent_id'])) {
-        //         $row->set('ancestors', implode(',', $row->getAncestors()));
-        //     }
-        // });
+    public static function onBeforeWrite(self $model)
+    {
+        $changeData = $model->getChangedData();
+
+        // 更新祖籍ids
+        if (isset($changeData['parent_id'])) {
+            $model->set('ancestors', implode(',', $model->getAncestors()));
+        }
     }
 }

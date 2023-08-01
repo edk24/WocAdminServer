@@ -163,7 +163,7 @@ class SysUserLogic
      */
     public static function delById(int $id)
     {
-        $user = SysUserModel::where('id', $id)->find();
+        $user = SysUserModel::where('user_id', $id)->find();
         if ($user == null) {
             throw new RuntimeException('用户不存在');
         }

@@ -5,7 +5,6 @@ namespace app\admin\controller;
 use app\admin\logic\auth\SysUserLogic;
 use app\admin\validate\auth\SysUserValidate;
 use Exception;
-use RuntimeException;
 use think\facade\Db;
 use think\Request;
 
@@ -17,14 +16,9 @@ class SysUserController extends BaseController
         return resp_data(SysUserLogic::lists($params));
     }
 
-    public function create(Request $request)
+    public function create()
     {
-        $params = $request->post();
-
-        $validate = new SysUserValidate();
-        if ($validate->scene('create')->check($params) == false) {
-            return resp_fail($validate->getError());
-        }
+        $params = (new SysUserValidate)->post()->goCheck('create');
 
         Db::startTrans();
         try {
@@ -39,14 +33,9 @@ class SysUserController extends BaseController
         return resp_success(['uid' => $uid], '操作成功');
     }
 
-    public function update(Request $request)
+    public function update()
     {
-        $params = $request->post();
-
-        $validate = new SysUserValidate();
-        if ($validate->scene('edit')->check($params) == false) {
-            return resp_fail($validate->getError());
-        }
+        $params = (new SysUserValidate)->post()->goCheck('edit');
 
         Db::startTrans();
         try {
@@ -65,16 +54,10 @@ class SysUserController extends BaseController
     /**
      * 修改密码
      *
-     * @param Request $request
      */
-    public function changePwd(Request $request)
+    public function changePwd()
     {
-        $params = $request->post();
-
-        $validate = new SysUserValidate();
-        if ($validate->scene('changePwd')->check($params) == false) {
-            return resp_fail($validate->getError());
-        }
+        $params = (new SysUserValidate)->post()->goCheck('changePwd');
 
         Db::startTrans();
         try {

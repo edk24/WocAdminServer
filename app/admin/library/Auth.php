@@ -194,4 +194,14 @@ class Auth
     {
         return intval($this->getUserModel()->getData('dept_id'));
     }
+
+    /**
+     * 是否为超级管理员
+     *
+     * @return boolean
+     */
+    public function isSuperAdmin(): bool
+    {
+        return SysUserLogic::isSuperAdmin($this->getUserId());
+    }
 }

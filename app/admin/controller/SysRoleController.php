@@ -20,13 +20,9 @@ class SysRoleController
     }
 
 
-    public function create(Request $request)
+    public function create()
     {
-        $params = $request->post();
-        $validate = new SysRoleValidate();
-        if ($validate->scene('create')->check($params) == false) {
-            return resp_fail($validate->getError());
-        }
+        $params = (new SysRoleValidate)->post()->goCheck('create');
 
         Db::startTrans();
         try {
@@ -42,13 +38,9 @@ class SysRoleController
     }
 
 
-    public function update(Request $request)
+    public function update()
     {
-        $params = $request->post();
-        $validate = new SysRoleValidate();
-        if ($validate->scene('edit')->check($params) == false) {
-            return resp_fail($validate->getError());
-        }
+        $params = (new SysRoleValidate)->post()->goCheck('edit');
 
         db::startTrans();
         try {
@@ -64,7 +56,7 @@ class SysRoleController
 
 
     /**
-     * 通过ID查询用户信息.
+     * 通过ID查询角色信息.
      */
     public function get(Request $request)
     {
@@ -75,7 +67,7 @@ class SysRoleController
             return resp_fail($e->getMessage());
         }
 
-        return resp_success(null, '查询成功');
+        return resp_success($role, '查询成功');
     }
 
     /**

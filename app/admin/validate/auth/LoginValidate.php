@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace app\admin\validate\auth;
 
-use think\Validate;
+use app\common\validate\BaseValidate;
 
-class LoginValidate extends Validate
+class LoginValidate extends BaseValidate
 {
 
     protected $rule = [
@@ -15,7 +15,7 @@ class LoginValidate extends Validate
     ];
 
 
-    protected $message = [
+    protected $field = [
         'account'       => '账号',
         'password'      => '密码'
     ];
