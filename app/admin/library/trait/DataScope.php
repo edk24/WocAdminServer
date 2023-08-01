@@ -52,18 +52,18 @@ trait DataScope
         $userKey = sprintf('%s.user_id', $this->userAlias);
 
         $where = [];
-        if ($dataScope == DataScopeType::ALL) {
+        if ($dataScope == DataScopeType::ALL->value) {
 
             // 什么都不需要做 😄
 
-        } else if ($dataScope == DataScopeType::DEPT) {
+        } else if ($dataScope == DataScopeType::DEPT->value) {
 
             $where[]  = [$deptKey, '=', $deptId];
-        } else if ($dataScope == DataScopeType::DEPT_AND_CHILD) {
+        } else if ($dataScope == DataScopeType::DEPT_AND_CHILD->value) {
 
             $deptChild = SysDeptLogic::getChildIdsByDeptId($deptId, true);
             $where[]  = [$deptKey, 'IN', $deptChild];
-        } else if ($dataScope == DataScopeType::SELF) {
+        } else if ($dataScope == DataScopeType::SELF->value) {
 
             $where[]  = [$userKey, '=', $userId];
         } else {
