@@ -15,7 +15,7 @@ class SysUserLogic
 {
     // 查询字段
     protected static array $field = [
-        'id',
+        'user_id',
         'account',
         'nickname',
         'avatar',
@@ -49,7 +49,7 @@ class SysUserLogic
         }
 
         $limit = intval($params['limit'] ?? 10);
-        $result = SysUserModel::where($where)->field(self::$field)->order('id desc')->paginate($limit);
+        $result = SysUserModel::with(['dept'])->dataScope('sys_user_model', 'sys_user_model')->where($where)->field(self::$field)->order('id desc')->paginate($limit);
 
         $rows = $result->items();
         foreach ($rows as &$row) {
@@ -89,7 +89,7 @@ class SysUserLogic
             throw new RuntimeException('创建用户失败, 请稍后再试~');
         }
 
-        return intval($user->getData('id') ?? -1);
+        return intval($user->user_id ?? -1);
     }
 
 
@@ -147,7 +147,7 @@ class SysUserLogic
      */
     public static function getById(int $id): SysUserModel
     {
-        $user = SysUserModel::where('id', $id)->find();
+        $user = SysUserModel::with(['dept'])->dataScope('sys_user_model', 'sys_user_model')->where('user_id', $id)->find();
         if ($user == null) {
             throw new RuntimeException('用户不存在');
         }

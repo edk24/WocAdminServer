@@ -14,6 +14,7 @@ class SysUserModel extends Model
 {
     use DataScope;
 
+    protected $pk = 'user_id';
     protected $name = 'sys_user';
 
 
