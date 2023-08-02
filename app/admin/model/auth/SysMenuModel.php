@@ -14,5 +14,7 @@ class SysMenuModel extends Model
 {
     use DataScope;
 
+    protected $pk = 'menu_id';
+
     protected $name = 'sys_menu';
 }

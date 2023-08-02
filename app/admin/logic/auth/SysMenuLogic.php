@@ -5,10 +5,11 @@ namespace app\admin\logic\auth;
 use app\admin\model\auth\SysMenuModel;
 use app\common\enums\StatusType;
 use RuntimeException;
+use think\facade\Db;
 
 class SysMenuLogic
 {
-    protected static string $field = "menu_id, menu_name, parent_id, sort, path, component, `query_params`, is_frame, is_cache, menu_type, visible, status, ifnull(perms,'') as perms, icon, create_time";
+    protected static string $field = "menu_id, menu_name, parent_id, sort, path, component, `query`, is_frame, is_cache, menu_type, visible, status, ifnull(perms,'') as perms, icon, create_time";
 
 
     /**
@@ -17,12 +18,12 @@ class SysMenuLogic
      * @param integer $userId
      * @return array
      */
-    public function lists(array $params, int $userId): array
+    public static function lists(array $params, int $userId): array
     {
         if (SysUserLogic::isSuperAdmin($userId)) {
-            return $this->listAll($params);
+            return self::listAll($params);
         } else {
-            return $this->listByUserId($params, $userId);
+            return self::listByUserId($params, $userId);
         }
     }
 
@@ -60,7 +61,7 @@ class SysMenuLogic
      * @param integer $userId
      * @return array
      */
-    public function listByUserId(array $params, int $userId): array
+    public static function listByUserId(array $params, int $userId): array
     {
         $where = [];
 
@@ -166,7 +167,7 @@ class SysMenuLogic
         $menu->set('sort', $params['sort'] ?? 999);
         $menu->set('path', $params['path']);
         $menu->set('component', $params['component']);
-        $menu->set('query', $params['query']);
+        $menu->set('query', isset($params['query']) ? $params['query'] : '');
         $menu->set('is_frame', $params['is_frame']);
         $menu->set('is_cache', $params['is_cache']);
         $menu->set('menu_type', $params['menu_type']);
@@ -198,7 +199,7 @@ class SysMenuLogic
         $menu->set('sort', $params['sort'] ?? 999);
         $menu->set('path', $params['path']);
         $menu->set('component', $params['component']);
-        $menu->set('query', $params['query']);
+        $menu->set('query', isset($params['query']) ? $params['query'] : '');
         $menu->set('is_frame', $params['is_frame']);
         $menu->set('is_cache', $params['is_cache']);
         $menu->set('menu_type', $params['menu_type']);
