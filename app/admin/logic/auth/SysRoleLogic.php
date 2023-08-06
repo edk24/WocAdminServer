@@ -39,7 +39,7 @@ class SysRoleLogic
         $limit = intval($params['limit'] ?? 10);
         $result = SysRoleModel::where($where)->field(self::$field)->paginate($limit);
         return [
-            'count'         => $result->total(),
+            'total'         => $result->total(),
             'rows'         => $result->items()
         ];
     }

@@ -96,7 +96,7 @@ class SysUserController extends BaseController
      */
     public function delete(Request $request)
     {
-        $id = intval($request->post('id'));
+        $id = intval($request->post('user_id'));
 
         Db::startTrans();
         try {

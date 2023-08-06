@@ -23,7 +23,8 @@ class SysUserLogic
         'last_login_time',
         'create_time',
         'update_time',
-        'dept_id'
+        'dept_id',
+        'status'
     ];
 
 
@@ -49,15 +50,15 @@ class SysUserLogic
         }
 
         $limit = intval($params['limit'] ?? 10);
-        $result = SysUserModel::with(['dept'])->dataScope('sys_user_model', 'sys_user_model')->where($where)->field(self::$field)->order('id desc')->paginate($limit);
+        $result = SysUserModel::with(['dept'])->dataScope('sys_user_model', 'sys_user_model')->where($where)->field(self::$field)->order('user_id desc')->paginate($limit);
 
         $rows = $result->items();
         foreach ($rows as &$row) {
-            $row->append(['deptName']);
+            $row->append(['deptName', 'statusText', 'statusColor', 'roleName', 'roleId']);
         }
 
         return [
-            'count'     => $result->total(),
+            'total'     => $result->total(),
             'rows'      => $rows
         ];
     }

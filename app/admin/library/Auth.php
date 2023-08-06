@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace app\admin\library;
 
 use app\admin\exception\LoginException;
+use app\admin\logic\auth\SysMenuLogic;
 use app\admin\logic\auth\SysUserLogic;
-use app\admin\model\auth\AdminModel;
 use app\admin\model\auth\SysUserModel;
 use library\jwt\Jwt;
 use library\jwt\JwtException;
 use library\jwt\JwtPayload;
+use library\Tree;
 use RuntimeException;
 use think\facade\Db;
 
@@ -90,8 +91,8 @@ class Auth
         }
 
         // 更新信息
-        $user->last_login_ip = $_SERVER['REMOTE_ADDR'];
-        $user->last_login_time = time();
+        $user->set('last_login_ip', $_SERVER['REMOTE_ADDR']);
+        $user->set('last_login_time', time());
         $user->save();
 
         $this->user = $user;
@@ -138,17 +139,27 @@ class Auth
      */
     public function getUserInfo(): array
     {
+        // routers
+        $menuList = SysMenuLogic::lists([], $this->getUserId());
+        $menuTree = Tree::getTreeArray($menuList, 0, 'menu_id', 'parent_id');
+        $routers = SysMenuLogic::buildRouters($menuTree);
+
+        // permission
+        $perms = SysMenuLogic::listPermsByUserId($this->getUserId());
+
         return [
             'user' => [
                 'nickname'              => $this->user->nickname,
                 'avatar'                => $this->user->avatar ?? letter_avatar($this->user->nickname ?? $this->user->account),
-                'id'                    => $this->user->user_id,
+                'user_id'               => $this->user->user_id,
                 'account'               => $this->user->account,
                 'last_login_time'       => $this->user->last_login_time,
                 'token'                 => $this->token,
                 'dept_id'               => $this->user->dept_id,
                 'dept_name'             => $this->user->dept->dept_name
-            ]
+            ],
+            'routers'       => $routers,
+            'permissions'   => $perms
         ];
     }
 

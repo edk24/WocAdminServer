@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\admin\controller;
 
 use app\admin\logic\auth\SysDeptLogic;
+use app\admin\model\auth\SysRoleModel;
 use app\admin\validate\auth\SysDeptValidate;
 use Exception;
 use think\facade\Db;
