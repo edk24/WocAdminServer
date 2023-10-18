@@ -1,2 +1,2 @@
-Docker ThinkPHP 6
+Docker ThinkPHP 8
 ===============
